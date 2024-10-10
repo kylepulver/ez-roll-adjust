@@ -1,0 +1,19 @@
+{{#with (lookup rolls 0)}}
+    <div class="dice-roll">
+        <div class="dice-formula">
+            {{this.formula}}
+        </div>
+    </div>
+
+    <div class="flexrow">
+        <button data-action="dec">-1</button>
+        <div style="text-align: center;align-self:center;font-size:120%">
+            {{#if ../isContentVisible}}
+            {{this.total}}
+            {{else}}            
+            ??
+            {{/if}}
+            </div>
+        <button data-action="inc">+1</button>
+    </div>
+{{/with}}

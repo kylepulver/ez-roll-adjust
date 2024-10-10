@@ -1,0 +1,65 @@
+{
+    "id": "ez-roll-adjust",
+    "title": "EZ Roll Adjust",
+    "description": "Adjust the results of rolls.",
+  "authors": [
+    {
+      "name": "kyle pulver",
+      "url": "https://github.com/kylepulver/ez-roll-adjust"
+    }
+  ],
+  "url": "https://github.com/kylepulver/ez-roll-adjust",
+  "version": "1",
+  "compatibility": {
+    "minimum": "12",
+    "verified": "12.331",
+    "maximum": "12"
+  },
+  "esmodules": [
+    "rolladjust.js"
+  ],
+  "scripts": [
+  ],
+  "styles": [
+    "rolladjust.css"
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "en.json"
+    }
+  ],
+  "packs": [],
+  "relationships": {
+    "systems": [
+    ],
+    "requires": [
+    ],
+    "optional": [],
+    "flags": {
+      "optional": []
+    }
+  },
+  "flags": {
+    "hotReload": {
+      "extensions": [
+        "css",
+        "html",
+        "hbs",
+        "json"
+      ],
+      "paths": [
+        "styles",
+        "languages"
+      ]
+    }
+  },
+  "socket": false,
+  "manifest": "https://raw.githubusercontent.com/kylepulver/ez-roll-adjust/main/module.json",
+  "download": "https://github.com/kylepulver/ez-roll-adjust/archive/refs/heads/main.zip",
+  "readme": "https://github.com/kylepulver/ez-roll-adjust",
+  "protected": false,
+  "coreTranslation": false,
+  "library": false
+}
