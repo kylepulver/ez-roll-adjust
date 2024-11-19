@@ -26,9 +26,10 @@ export class ChatAdjustApplication extends Application {
     activateListeners(html) {
         super.activateListeners(html);
         html.on("click", "[data-action]", async (ev) => {
-            let action = ev.currentTarget.dataset.action
+            const action = ev.currentTarget.dataset.action
 
-            let roll = this.message.rolls[0];
+            // Assume there's just one roll here
+            const roll = this.message.rolls[0];
 
             let term = roll.terms.find(t => t.flavor == "adjust") ?? false;
 
@@ -48,9 +49,17 @@ export class ChatAdjustApplication extends Application {
             roll._total = roll._evaluateTotal();
             roll._formula = roll.formula;
 
+            
+            // Force update for rerolls that are a pain in the butt
+            const content = $(`<div>` + this.message.content + `</div>`);
+            content.find(".dice-result .dice-formula").not('.reroll-discard .dice-formula').text(roll.formula)
+            content.find(".dice-result .dice-total").not('.reroll-discard .dice-total').text(roll._total)
+            
             await this.message.update({
-                rolls: foundry.utils.duplicate(this.message.rolls)
+                rolls: foundry.utils.duplicate(this.message.rolls),
+                content: content.html()
             })
+
             this.render(true);
         })
     }
