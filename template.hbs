@@ -1,7 +1,7 @@
 <div>
     <div class="flexrow">
 
-    <div style="text-align: center;align-self:center;font-size:120%;max-width: 4em">
+    <div style="text-align: center;align-self:center;font-size:150%;max-width: 4em">
         {{#if message.isContentVisible}}
         {{#with (lookup message.rolls 0)}}
         {{this.total}}
@@ -20,8 +20,8 @@
 {{#each flavors}}
 <div class="flexrow" data-flavor="{{this}}" style="align-items:center;gap:2px">
     <div style="text-align:right">{{this}}</div>
-    <button data-action="dec" style="max-width: 4em">-1</button>
-    <button data-action="inc" style="max-width: 4em">+1</button>
+    <button data-action="dec" style="max-width: 4em; font-size: 125%">-1</button>
+    <button data-action="inc" style="max-width: 4em; font-size: 125%">+1</button>
 </div>
 {{/each}}
 

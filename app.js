@@ -96,8 +96,6 @@ export class ChatAdjustApplication extends Application {
                 addTerm(roll, -1, flavor)
             }
 
-            
-            
             // Force update for rerolls that are a pain in the butt
             const content = $(`<div>` + this.message.content + `</div>`);
             content.find(".dice-result .dice-formula").not('.reroll-discard .dice-formula').text(roll.formula)
