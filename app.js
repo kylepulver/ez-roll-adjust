@@ -2,6 +2,10 @@ export class ChatAdjustApplication extends Application {
     constructor(message) {
         super();
         this.message = message;
+        this.flavors = this.message.rolls[0].terms.filter(term => term.flavor).map(term => term.flavor);
+        if (!this.flavors.length) {
+            this.flavors = ["adjust", "heroic"]
+        }
     }
     
     static get defaultOptions() {
@@ -20,35 +24,79 @@ export class ChatAdjustApplication extends Application {
     }
 
     getData(options) {
-        return this.message;
+        return {message: this.message, flavors: this.flavors};
     }
 
     activateListeners(html) {
         super.activateListeners(html);
-        html.on("click", "[data-action]", async (ev) => {
-            const action = ev.currentTarget.dataset.action
 
-            // Assume there's just one roll here
-            const roll = this.message.rolls[0];
-
-            let term = roll.terms.find(t => t.flavor == "adjust") ?? false;
+        const setTerm = (roll, number, flavor = "adjust") => {
+            let term = roll.terms.find(t => t.flavor == flavor) ?? false;
 
             if (!term) {
-                term = new foundry.dice.terms.NumericTerm({number: 0, options:{flavor: "adjust"}});
+                term = new foundry.dice.terms.NumericTerm({number: 0, options:{flavor: flavor}});
                 roll.terms.push(new foundry.dice.terms.OperatorTerm({operator:"+"}))
                 roll.terms.push(term);
             }
 
-            if (action == "inc") {
-                term.number += 1;
-            }
-            if (action == "dec") {
-                term.number -= 1;
+            term.number = number;
+
+            if (term.number == 0) {
+                const idx = roll.terms.findIndex(t => t == term);
+                roll.terms.splice(idx - 1, 2);
             }
 
             roll._total = roll._evaluateTotal();
             roll._formula = roll.formula;
+        }
 
+        const addTerm = (roll, add, flavor = "adjust") => {
+            let term = roll.terms.find(t => t.flavor == flavor) ?? false;
+
+            if (!term) {
+                term = new foundry.dice.terms.NumericTerm({number: 0, options:{flavor: flavor}});
+                roll.terms.push(new foundry.dice.terms.OperatorTerm({operator:"+"}))
+                roll.terms.push(term);
+            }
+
+            term.number += add;
+
+            if (term.number == 0) {
+                const idx = roll.terms.findIndex(t => t == term);
+                roll.terms.splice(idx - 1, 2);
+            }
+
+            roll._total = roll._evaluateTotal();
+            roll._formula = roll.formula;
+        }
+        
+        html.on("click", "[data-action]", async (ev) => {
+            const action = ev.currentTarget.dataset.action
+            const flavor = $(ev.currentTarget).closest("[data-flavor]").data("flavor");
+            
+            // Assume there's just one roll here
+            const roll = this.message.rolls[0];
+
+            if (action == "new") {
+                const newname = html.find(`input[name="newname"]`).val();
+
+                if (!newname) return;
+                if (this.flavors.includes(newname)) return;
+
+                this.flavors.push(newname);
+                this.render(true);
+
+                return;
+            }
+
+            if (action == "inc") {
+                addTerm(roll, 1, flavor)
+            }
+            if (action == "dec") {
+                addTerm(roll, -1, flavor)
+            }
+
+            
             
             // Force update for rerolls that are a pain in the butt
             const content = $(`<div>` + this.message.content + `</div>`);

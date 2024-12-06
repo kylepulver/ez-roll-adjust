@@ -1,19 +1,33 @@
-{{#with (lookup rolls 0)}}
-    <div class="dice-roll">
-        <div class="dice-formula">
-            {{this.formula}}
-        </div>
-    </div>
-
+<div>
     <div class="flexrow">
-        <button data-action="dec">-1</button>
-        <div style="text-align: center;align-self:center;font-size:120%">
-            {{#if ../isContentVisible}}
-            {{this.total}}
-            {{else}}            
-            ??
-            {{/if}}
-            </div>
-        <button data-action="inc">+1</button>
+
+    <div style="text-align: center;align-self:center;font-size:120%;max-width: 4em">
+        {{#if message.isContentVisible}}
+        {{#with (lookup message.rolls 0)}}
+        {{this.total}}
+        {{/with}}
+        {{else}}            
+        ??
+        {{/if}}
     </div>
-{{/with}}
+    <div>
+        {{#with (lookup message.rolls 0)}}
+            {{this.formula}}
+        {{/with}}
+    </div>
+</div>
+
+{{#each flavors}}
+<div class="flexrow" data-flavor="{{this}}" style="align-items:center;gap:2px">
+    <div style="text-align:right">{{this}}</div>
+    <button data-action="dec" style="max-width: 4em">-1</button>
+    <button data-action="inc" style="max-width: 4em">+1</button>
+</div>
+{{/each}}
+
+<div class="flexrow">
+    <input type="text" name="newname" value="" placeholder="Modifier Name" />
+    <button data-action="new">New Modifier</button>
+</div>
+
+</div>
